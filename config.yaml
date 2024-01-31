@@ -1,0 +1,47 @@
+resume: null
+save_dir: ckpt/
+log_dir: tensorboard/
+gpu: false
+n_gpu: null
+metrics:
+- _target_: srcs.model.metric.accuracy
+- _target_: srcs.model.metric.precision
+- _target_: srcs.model.metric.recall
+- _target_: srcs.model.metric.f1
+data_loader:
+  _target_: srcs.data_loader.data_loaders.get_sign_dataloader
+  csv_path_train: conf/data/train.csv
+  csv_path_val: conf/data/valid.csv
+  batch_size: 32
+  shuffle: true
+  num_workers: 8
+name: MobileNet
+arch:
+  _target_: torchvision.models.mobilenet_v2
+  pretrained: true
+loss:
+  _target_: srcs.model.loss.cross_entropy
+optimizer:
+  _target_: torch.optim.Adam
+  lr: 0.001
+  weight_decay: 0
+  amsgrad: true
+lr_scheduler:
+  _target_: torch.optim.lr_scheduler.StepLR
+  step_size: 50
+  gamma: 0.1
+n_cpu: 8
+batch_size: 32
+learning_rate: 0.001
+weight_decay: 0
+scheduler_step_size: 50
+scheduler_gamma: 0.1
+status: train
+trainer:
+  epochs: 7
+  logging_step: 100
+  monitor: min loss/valid
+  save_topk: 7
+  early_stop: 10
+  tensorboard: true
+cwd: .

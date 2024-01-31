@@ -1,0 +1,8 @@
+# @package _global_
+data_loader:
+  _target_: srcs.data_loader.data_loaders.get_sign_dataloader
+  csv_path_train: conf/data/train.csv
+  csv_path_val: conf/data/valid.csv
+  batch_size: ${batch_size}
+  shuffle: true
+  num_workers: ${n_cpu}

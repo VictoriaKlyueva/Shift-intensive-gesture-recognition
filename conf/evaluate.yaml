@@ -1,0 +1,16 @@
+log_dir: tensorboard/
+checkpoint: ckpt/model_best.pth
+n_gpu:
+metrics:
+  - _target_: srcs.model.metric.accuracy
+  - _target_: srcs.model.metric.precision
+  - _target_: srcs.model.metric.recall
+  - _target_: srcs.model.metric.f1
+
+defaults:
+  - _self_
+  - hparams: linear_baseline
+  - data: sign_test
+  - status: evaluate
+  - hydra/run/dir: job_timestamp
+  - override hydra/job_logging : custom

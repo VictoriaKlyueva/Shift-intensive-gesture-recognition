@@ -1,0 +1,6 @@
+# @package _global_
+data_loader:
+  _target_: srcs.data_loader.data_loaders.get_sign_test_dataloader
+  csv_path_test: conf/data/test.csv
+  batch_size: ${batch_size}
+  num_workers: ${n_cpu}

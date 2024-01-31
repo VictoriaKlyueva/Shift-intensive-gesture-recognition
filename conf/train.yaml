@@ -1,0 +1,20 @@
+resume: #ckpt/model_best.pth
+save_dir: ckpt/
+log_dir: tensorboard/
+gpu: false
+n_gpu: 0
+metrics:
+  - _target_: srcs.model.metric.accuracy
+  - _target_: srcs.model.metric.precision
+  - _target_: srcs.model.metric.recall
+  - _target_: srcs.model.metric.f1
+
+defaults:
+  - _self_
+  - data: sign_train
+  - model: linear_model
+  - hparams: linear_baseline
+
+  - status: train
+  - hydra/run/dir: job_timestamp
+  - override hydra/job_logging : custom
