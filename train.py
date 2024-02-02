@@ -1,7 +1,6 @@
 import numpy as np
 import hydra
 import torch
-import torch.nn as nn
 from omegaconf import OmegaConf
 from pathlib import Path
 from srcs.trainer import Trainer
@@ -24,18 +23,6 @@ def train_worker(config):
 
     # build model. print it's structure and # trainable params.
     model = instantiate(config.arch)
-    # добавила код ниже
-    model.classifier = nn.Sequential(
-        nn.Linear(in_features=model.classifier[1].in_features, out_features=4096, bias=True),
-        nn.ReLU(inplace=True),
-        nn.Dropout(p=0.5, inplace=False),
-        nn.Linear(in_features=4096, out_features=4096, bias=True),
-        nn.ReLU(inplace=True),
-        nn.Dropout(p=0.5, inplace=False),
-        nn.Linear(in_features=4096, out_features=25, bias=True)
-    )
-    model.features[0] = nn.Conv2d(1, 32, 3, 3)
-
     trainable_params = filter(lambda p: p.requires_grad, model.parameters())
     logger.info(model)
     logger.info(f'Trainable parameters: {sum([p.numel() for p in trainable_params])}')
@@ -79,6 +66,7 @@ def main(config):
         config.resume = hydra.utils.to_absolute_path(config.resume)
     config = OmegaConf.to_yaml(config, resolve=True)
     init_worker(working_dir, config)
+
 
 if __name__ == '__main__':
     main()

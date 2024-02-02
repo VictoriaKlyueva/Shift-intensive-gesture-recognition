@@ -1,6 +1,6 @@
 log_dir: tensorboard/
 checkpoint: ckpt/model_best.pth
-n_gpu: null
+n_gpu: 0
 metrics:
 - _target_: srcs.model.metric.accuracy
 - _target_: srcs.model.metric.precision

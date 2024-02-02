@@ -1,6 +1,5 @@
 import logging
 import torch
-import torch.nn as nn
 import hydra
 from omegaconf import OmegaConf
 from tqdm import tqdm
@@ -10,7 +9,7 @@ from srcs.utils import instantiate
 logger = logging.getLogger('evaluate')
 
 
-@hydra.main(version_base=None,config_path='conf', config_name='evaluate')
+@hydra.main(version_base=None, config_path='conf', config_name='evaluate')
 def main(config):
     logger.info('Loading checkpoint: {} ...'.format(config.checkpoint))
     checkpoint = torch.load(config.checkpoint)
@@ -23,16 +22,6 @@ def main(config):
 
     # restore network architecture
     model = instantiate(loaded_config.arch)
-    model.classifier = nn.Sequential(
-        nn.Linear(in_features=model.classifier[1].in_features, out_features=4096, bias=True),
-        nn.ReLU(inplace=True),
-        nn.Dropout(p=0.5, inplace=False),
-        nn.Linear(in_features=4096, out_features=4096, bias=True),
-        nn.ReLU(inplace=True),
-        nn.Dropout(p=0.5, inplace=False),
-        nn.Linear(in_features=4096, out_features=25, bias=True)
-    )
-    model.features[0] = nn.Conv2d(1, 32, 3, 3)
     logger.info(model)
 
     # load trained weights

@@ -1,17 +1,17 @@
 import torch.nn as nn
-import torch.nn.functional as F
+from torchvision import models
 
-class LinearModel(nn.Module):
-    def __init__(self, num_classes=10):
+
+class ResNet34(nn.Module):
+    def __init__(self, num_classes=25):
         super().__init__()
-
-        self.fc1 = nn.Linear(784, 1024)
-        self.fc2 = nn.Linear(1024, 512)
-        self.fc3 = nn.Linear(512, num_classes)
+        self.model = models.resnet34(pretrained=True)
+        self.model.conv1 = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+        self.drop = nn.Dropout(p=0.2)
+        self.fc = nn.Linear(1000, num_classes)
 
     def forward(self, x):
-        x = x.view(-1, 784)
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
-        return F.log_softmax(x, dim=1)
+        x = self.model(x)
+        x = self.drop(x)
+        x = self.fc(x)
+        return x

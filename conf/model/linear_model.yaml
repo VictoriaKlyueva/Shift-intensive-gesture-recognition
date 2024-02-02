@@ -1,8 +1,8 @@
 # @package _global_
-name: MobileNet
+name: ResNet34
 arch:
-  _target_: torchvision.models.mobilenet_v2
-  pretrained: true
+  _target_: srcs.model.model.ResNet34
+  num_classes: 25
 loss:
   _target_: srcs.model.loss.cross_entropy
 optimizer:
