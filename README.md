@@ -1,2 +1,13 @@
 # SHIFT intensive from CFT. Winter 2024
-This repository is a solution to the intensive project task 
+Данный репозиторий - решение, разработанное в рамках ШИФТ - интенсива.
+
+## В рамках данного решения:
+- Была проведена обработка датасета
+- Вручную инициализирована (на базе Pytorch) и обучена модель Resnet34
+- Реализован код для инференса модели
+
+## Используемые технологии:
+- Pytorch
+- Pandas
+- Hydra
+- Sklearn
